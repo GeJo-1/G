@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Card for Gillian</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<link rel="icon" type="image/png" href="favicon.png" />
+<body>
+  <!-- Background and Petal Layers -->
+  <div id="background">
+    <div id="petal-layer"></div>
+  </div>
+
+  <!-- Intro Scene -->
+  <div id="intro" class="scene">
+    <p id="intro-text">Rise and shine, birthday girl...</p>
+  </div>
+
+  <!-- Name Reveal -->
+  <div id="name-scene" class="scene hidden">
+    <h1 id="name">GILLIAN</h1>
+  </div>
+
+  <!-- Main Message -->
+  <div id="message-scene" class="scene hidden">
+    <div class="card">
+      <p>
+        I don’t even know where to start, because how do you describe someone who makes life feel lighter just by being in it? Since the day you appeared, you’ve had this quiet kind of magic that turns ordinary moments into memories worth keeping. You’ve been a source of laughter, calm, and kindness without even trying. You have this way of understanding people, of making them feel seen and valued, that’s rare and beautiful. You bring light into every space you walk into, just by being yourself.
+      </p>
+      <p>
+        Today isn’t just your birthday. It’s a reminder of how lucky the world is to have you — your heart, your humor, and your warmth. I hope this year gives you the same joy you’ve given to everyone around you, because you truly deserve it. Happy birthday, Jiggy G 💖
+      </p>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button id="play-btn">Play song & celebrate</button>
+        <a href="memory_book.html" class="memory-link">Open your memory book</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio -->
+  <audio id="birthday-song" src="Busy Signal - Happy Birthday.mp3" preload="auto"></audio>
+
+  <!-- Confetti Container -->
+  <div id="confetti"></div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Gillian’s Memory Book</title>
+<meta name="theme-color" content="#FBE8E9" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="25th-anniversary.png" />
+
+<style>
+  :root{
+    --bg-a: #fbe8e9;
+    --bg-b: #f8d7de;
+    --ink: #2e1c13;
+    --muted: #7a584d;
+    --accent: #f97316;
+    --card-w: min(92vw, 980px);
+    --card-h: clamp(360px, 62vh, 720px);
+    --radius: 20px;
+    --depth: 40px;
+    --transition-fast: 220ms;
+    --transition-med: 420ms;
+    --shadow-1: 0 10px 30px rgba(30,20,15,0.12);
+    --glass: rgba(255,255,255,0.64);
+  }
+
+  /* Reset */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: EB Garamond, serif;
+    color:var(--ink);
+    background: radial-gradient(900px 500px at 20% 20%, rgba(255,238,240,0.9), transparent),
+                linear-gradient(180deg, var(--bg-a), var(--bg-b));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: clamp(16px,3vw,36px);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* App wrapper */
+  .app {
+    width: var(--card-w);
+    max-width:100%;
+    display:grid;
+    gap: clamp(12px,2.5vw,20px);
+    align-items:start;
+  }
+
+  /* Header row with title and page indicator + audio control */
+  .topbar {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+  }
+  .title {
+    font-family: Playfair Display, serif;
+    font-size: clamp(1.05rem, 2.6vw, 1.45rem);
+    font-weight:700;
+  }
+  .subtitle { color:var(--muted); font-size:0.95rem; }
+  .right-controls { display:flex; gap:10px; align-items:center; }
+
+  /* Intro card (landing) */
+  .intro-wrap{
+    width:100%;
+    display:grid;
+    place-items:center;
+    min-height: var(--card-h);
+  }
+
+  .intro-card{
+    width:min(820px,92%);
+    max-width:100%;
+    border-radius:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,250,250,0.86));
+    box-shadow: 0 24px 60px rgba(14,8,8,0.12), 0 6px 18px rgba(0,0,0,0.06);
+    padding: clamp(28px,4vw,40px);
+    display:flex;
+    gap:20px;
+    align-items:center;
+    transform-style:preserve-3d;
+    transition: transform var(--transition-med) ease, opacity var(--transition-med) ease;
+  }
+  .intro-copy { flex:1; }
+  .intro-title { font-family: Playfair Display, serif; font-size: clamp(1.6rem, 3.4vw, 2.2rem); margin-bottom:8px; }
+  .intro-sub { color:var(--muted); font-size:1rem; margin-bottom:14px; }
+  .intro-cta { display:flex; gap:12px; align-items:center; }
+
+  .open-btn {
+    --btn-h:48px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    height:var(--btn-h);
+    padding:0 18px;
+    border-radius:12px;
+    background:linear-gradient(90deg,#6b4a2b,#3d2b1f);
+    color:white;
+    font-weight:700;
+    border:none;
+    cursor:pointer;
+    box-shadow: 0 12px 34px rgba(61,43,31,0.16);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+    font-family: Playfair Display, serif;
+    font-size:1rem;
+  }
+  .open-btn:active{ transform: translateY(1px) }
+  .open-btn .playicon{
+    width:18px;height:18px;display:inline-block;
+    transform-origin:center;
+  }
+  .open-subtle {
+    background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:0.95rem;
+  }
+
+  /* --- Enhanced responsiveness for intro section --- */
+  @media (max-width: 820px) {
+    .intro-card {
+      flex-direction: column;
+      text-align: center;
+      gap: clamp(18px, 3vw, 24px);
+      padding: clamp(24px, 5vw, 32px);
+    }
+
+    .intro-copy {
+      order: 2;
+      width: 100%;
+    }
+
+    .intro-title {
+      font-size: clamp(1.4rem, 5vw, 1.8rem);
+    }
+
+    .intro-sub {
+      font-size: clamp(0.95rem, 3.8vw, 1.05rem);
+    }
+
+    .intro-cta {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .intro-visual {
+      order: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .intro-visual > div {
+      width: clamp(120px, 36vw, 160px);
+      height: clamp(120px, 36vw, 160px);
+    }
+
+    .open-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .open-subtle {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .intro-card {
+      padding: 20px;
+      border-radius: 14px;
+    }
+
+    .intro-title {
+      font-size: 1.4rem;
+    }
+
+    .intro-sub {
+      font-size: 0.92rem;
+      margin-bottom: 10px;
+    }
+
+    .open-btn {
+      height: 44px;
+      font-size: 0.95rem;
+    }
+  }
+
+  /* Book stage (hidden until opened) */
+  .book-stage {
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height: var(--card-h);
+    perspective:2200px;
+    transition: opacity var(--transition-med) ease, transform var(--transition-med) ease;
+  }
+  .hidden { display:none !important; }
+
+  /* book card */
+  .book-card{
+    width:92%;
+    max-width:880px;
+    height:88%;
+    border-radius: var(--radius);
+    background: linear-gradient(145deg,#fffaf7,#f4ece3);
+    box-shadow: var(--shadow-1), 0 40px 80px rgba(14,10,8,0.06);
+    position:relative;
+    transform-style: preserve-3d;
+    transition: transform var(--transition-med) cubic-bezier(.18,.9,.3,1), opacity var(--transition-med);
+    overflow:visible;
+  }
+
+  .spine{
+    position:absolute;
+    left: -22px;
+    top: 14px;
+    width: 40px;
+    height: calc(100% - 28px);
+    background: linear-gradient(180deg,#d6c3b5,#b69d88);
+    border-radius: 6px;
+    transform: rotateY(-20deg);
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.12);
+    z-index: 4;
+    transform-origin: left center;
+  }
+  .card-glow{ position:absolute; inset:0; pointer-events:none; z-index:2; border-radius:inherit;
+    background-image: radial-gradient(500px 220px at 12% 14%, rgba(255,230,232,0.65), transparent),
+                      radial-gradient(380px 160px at 88% 88%, rgba(255,244,236,0.45), transparent); filter: blur(8px); mix-blend-mode: screen; }
+
+  .card-inner{
+    position:relative;
+    z-index:6;
+    width:100%;
+    height:100%;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap: clamp(12px,2.6vw,28px);
+    padding: clamp(18px,3vw,32px);
+    align-items:center;
+  }
+
+  .reader {
+    background: linear-gradient(180deg,#fff,#fbf7f4);
+    padding: clamp(18px,2.2vw,28px);
+    border-radius:12px;
+    box-shadow: 0 8px 28px rgba(8,6,6,0.06);
+    transform: translateZ(24px);
+    min-height: calc(100% - 32px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .reader h2 { font-family: Playfair Display, serif; font-size: clamp(1.25rem, 2.8vw, 1.8rem); margin-bottom: 0.6rem; line-height:1.05; }
+  .reader p { margin-top: 0.4rem; line-height:1.7; font-size: clamp(1rem, 1.8vw, 1.05rem); color:var(--ink); }
+
+  .preview { display:flex; flex-direction:column; gap:12px; align-items:center; justify-content:center; transform: translateZ(12px); }
+  .mock { width:320px; max-width:44vw; height:200px; border-radius:14px; background: linear-gradient(180deg,#07203a,#0b1220); box-shadow: 0 28px 60px rgba(2,6,23,0.45); transform-style: preserve-3d; overflow:hidden; position:relative; transition: transform var(--transition-fast) ease; }
+  .mock .layer { position:absolute; inset:12px; border-radius:10px; background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow: 0 10px 30px rgba(2,6,23,0.35); transform-origin:center; transition: transform var(--transition-med) cubic-bezier(.2,.9,.3,1); }
+  .layer.l3 { transform: translateZ(calc(var(--depth) * 0.8px)) scale(0.985); left:18px; top:18px; right:18px; bottom:18px }
+  .layer.l2 { transform: translateZ(calc(var(--depth) * 0.5px)) scale(0.993); left:10px; top:10px; right:10px; bottom:10px }
+  .screen { position:absolute; inset:22px; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.95rem; color:rgba(255,255,255,0.95); transform: translateZ(calc(var(--depth) * 1.2px)); padding:12px; text-align:center; }
+
+  .controls { display:flex; gap:10px; align-items:center; justify-content:center; margin-top:6px; }
+  .btn { font-family: Playfair Display, serif; border:none; cursor:pointer; padding:0.6em 1.1em; border-radius:10px; transition: transform 180ms ease, box-shadow 180ms ease; font-weight:600; background:transparent; }
+  .btn-primary { background: linear-gradient(90deg,#6b4a2b,#3d2b1f); color:#fff; box-shadow: 0 10px 30px rgba(61,43,31,0.12); }
+  .btn-ghost { background:transparent; color:var(--ink); border:1px solid rgba(0,0,0,0.06); }
+  .page-index { color:var(--muted); font-size:0.96rem; }
+
+  /* Edge hit targets */
+  .edge { position:absolute; top:0; bottom:0; width:18%; z-index: 20; background: transparent; border: none; }
+  .edge.left { left:0 } .edge.right { right:0 }
+
+  /* small helpers */
+  .sr-only{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+  /* responsive */
+  @media (max-width:980px){
+    .card-inner{ grid-template-columns: 1fr; padding: clamp(14px,3vw,22px); }
+    .preview{ order:-1; align-items:flex-start; }
+    .mock{ width:100%; height:180px; max-width:100% }
+    .spine{ display:none }
+    .stage{ height: auto }
+  }
+  @media (max-width:520px){
+    :root{ --depth: 28; }
+    .mock { height:150px }
+    .reader h2 { font-size: 1.2rem }
+    .reader p { font-size: 0.98rem }
+  }
+
+  /* tilt */
+  .tilt { transform: rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0); }
+
+  /* transitions between intro and book */
+  .fade-out { opacity:0; transform: translateY(12px) scale(.996); pointer-events:none; }
+  .fade-in { opacity:1; transform: translateY(0) scale(1); }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .intro-card, .book-card, .mock, .layer, .reader { transition:none !important; animation:none !important; }
+  }
+
+  /* ----------------------
+     Slideshow overlay + 3D card + Ken Burns + finale
+     ---------------------- */
+  .slideshow-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+  }
+  .slideshow-overlay.visible { display: flex; }
+
+  .slideshow-backdrop {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(6,6,6,0.45), rgba(20,16,18,0.54));
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 420ms ease;
+  }
+  .slideshow-overlay.open .slideshow-backdrop { opacity: 1; }
+
+  .slideshow-card {
+    position: relative;
+    width: min(92vw, 980px);
+    max-width: 96%;
+    height: min(74vh, 720px);
+    border-radius: 18px;
+    background: linear-gradient(145deg,#fffaf7,#f4ece3);
+    box-shadow: 0 40px 90px rgba(6,8,10,0.42);
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    transform: translateY(28px) rotateX(12deg) scale(0.96);
+    opacity: 0;
+    transition: transform 640ms cubic-bezier(.16,.9,.24,1), opacity 420ms ease;
+    overflow: hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .slideshow-overlay.open .slideshow-card {
+    transform: translateY(0) rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+
+  .slideshow-inner {
+    width:100%;
+    height:100%;
+    position: relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow: hidden;
+    perspective: 1100px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  }
+
+  /* 3D slide container */
+  .slide {
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition: opacity 900ms cubic-bezier(.2,.9,.3,1), transform 900ms cubic-bezier(.2,.9,.3,1);
+    transform: translateZ(-80px) rotateY(18deg) scale(0.98);
+    pointer-events: none;
+  }
+  .slide.visible { opacity: 1; transform: translateZ(0) rotateY(0deg) scale(1); pointer-events: auto; }
+
+  .slide .media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display:block;
+    border-radius: 12px;
+    overflow: hidden;
+    transform-origin: center center;
+    will-change: transform, opacity;
+    box-shadow: 0 18px 48px rgba(8,10,14,0.14);
+  }
+
+  /* Ken Burns effect on media */
+  .slide .media {
+    animation: kenburns 14s ease-in-out forwards;
+  }
+  @keyframes kenburns {
+    from { transform: scale(1) translateY(0); }
+    to   { transform: scale(1.08) translateY(-6%); }
+  }
+
+  /* final white fade and typewriter */
+  .white-fade {
+    position:absolute;
+    inset:0;
+    background: #fff;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 2000ms ease;
+    z-index: 96;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .white-fade.visible { opacity:1; pointer-events:auto; }
+
+  .final-message {
+    font-family: Playfair Display, serif;
+    font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+    color: var(--ink);
+    opacity:0;
+    transform: translateY(6px);
+    transition: opacity 420ms ease, transform 420ms ease;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+  }
+  .final-message.visible { opacity: 1; transform: translateY(0); }
+
+  /* controls + close */
+  .slideshow-controls {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display:flex;
+    gap:10px;
+    z-index: 6;
+  }
+  .slideshow-controls .btn { padding: 8px 12px; border-radius: 10px; font-weight:700; }
+
+  .slideshow-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 6;
+    background: rgba(255,255,255,0.92);
+    border-radius: 10px;
+    padding: 8px 10px;
+    box-shadow: 0 8px 22px rgba(6,8,10,0.12);
+    cursor: pointer;
+  }
+
+  @media (max-width:768px){
+    .slideshow-card { height: 62vh; border-radius: 12px; }
+    .slideshow-controls { bottom: 12px; }
+    .slideshow-close { top: 10px; right: 10px; padding: 6px 8px; }
+  }
+  @media (max-width:480px){
+    .slideshow-card { width: 96vw; height: 58vh; }
+    .final-message { font-size: 1.5rem; padding: 0 12px; text-align:center; }
+  }
+
+</style>
+</head>
+<body>
+  <!-- Slideshow overlay (Page 6) - hidden by default -->
+  <div class="slideshow-overlay" id="slideshowOverlay" aria-hidden="true" role="dialog" aria-label="Slideshow of memories">
+    <div class="slideshow-backdrop" id="slideshowBackdrop" aria-hidden="true"></div>
+
+    <div class="slideshow-card" id="slideshowCard" role="document" aria-live="off">
+      <div class="slideshow-inner" id="slideshowInner" aria-live="off" aria-atomic="false">
+        <!-- slides are created dynamically by JS -->
+      </div>
+
+      <div class="white-fade" id="whiteFade" aria-hidden="true">
+        <div class="final-message" id="finalMessage" aria-hidden="true"></div>
+      </div>
+
+      <button class="slideshow-close" id="slideshowClose" aria-label="Close slideshow">Close</button>
+
+      <div class="slideshow-controls" aria-hidden="false">
+        <button id="ssPrev" class="btn btn-ghost" aria-label="Previous slide">Prev</button>
+        <button id="ssPause" class="btn btn-ghost" aria-pressed="false" aria-label="Pause slideshow">Pause</button>
+        <button id="ssNext" class="btn btn-primary" aria-label="Next slide">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="app" id="app" aria-live="polite">
+
+    <!-- Topbar: title + controls -->
+    <div class="topbar" role="banner" aria-label="Page header">
+      <div>
+        <div class="title">Gillian’s Memory Book</div>
+        <div class="subtitle">A small collection of letters — one page at a time</div>
+      </div>
+
+      <div class="right-controls" aria-hidden="false">
+        <div id="pageIndex" class="page-index" aria-live="polite">1 / 5</div>
+        <button id="audioToggle" class="btn btn-ghost" aria-pressed="false" aria-label="Pause music">Pause</button>
+      </div>
+    </div>
+
+    <!-- Intro / landing card -->
+    <section class="intro-wrap" id="introWrap" aria-label="Intro card">
+      <div class="intro-card" id="introCard" role="region" aria-labelledby="introTitle" aria-describedby="introDesc">
+        <div class="intro-copy">
+          <h1 id="introTitle" class="intro-title">Gillian’s Memory Book</h1>
+          <p id="introDesc" class="intro-sub">Open a small collection of letters. Press Open Book to begin — music included.</p>
+          <div class="intro-cta">
+            <button id="openBtn" class="open-btn" aria-label="Open book and play music">
+              <svg class="playicon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 3v18l15-9L5 3z" fill="currentColor"/></svg>
+              <span>Open Book</span>
+            </button>
+            <button id="openSilent" class="open-subtle" aria-label="Open book without music">Open quietly</button>
+          </div>
+        </div>
+        <div class="intro-visual" aria-hidden="true">
+          <div style="width:160px;height:160px;border-radius:12px;background:linear-gradient(180deg,#f9e2e5,#f6d7dc);box-shadow:0 18px 48px rgba(0,0,0,0.08);display:grid;place-items:center;">
+            <div style="font-weight:700;color:var(--ink);">G</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main book stage (hidden until open) -->
+    <section class="book-stage hidden" id="bookStage" aria-label="Book stage">
+      <article class="book-card tilt" id="bookCard" role="region" aria-label="Memory display card" tabindex="0">
+        <div class="spine" aria-hidden="true"></div>
+        <div class="card-glow" aria-hidden="true"></div>
+
+        <div class="card-inner" id="cardInner">
+          <!-- Reader column -->
+          <section class="reader" id="reader" aria-live="polite" aria-atomic="true">
+            <h2 id="messageTitle">The Day It Began</h2>
+            <p id="messageBody">
+              I still remember the day I first texted you. It wasn’t meant to be anything serious. I wasn’t trying to flirt or make an impression. I just had this quiet feeling that you were someone worth knowing. That was back in 2018, and I had no idea that one random message would turn into one of the best choices I’ve ever made.
+            </p>
+          </section>
+
+          <!-- Preview mock -->
+          <aside class="preview" aria-hidden="true">
+            <div class="mock" id="mock">
+              <div class="layer l2"></div>
+              <div class="layer l3"></div>
+              <div class="screen" id="mockScreen">Mock preview — layered depth</div>
+            </div>
+
+            <div class="controls" role="group" aria-label="Navigation controls">
+              <button id="prevBtn" class="btn btn-ghost" aria-label="Previous message">Prev</button>
+              <button id="nextBtn" class="btn btn-primary" aria-label="Next message">Next</button>
+            </div>
+          </aside>
+        </div>
+
+        <!-- large invisible edges for touch nav -->
+        <button class="edge left" id="edgePrev" aria-hidden="true" title="Previous"></button>
+        <button class="edge right" id="edgeNext" aria-hidden="true" title="Next"></button>
+      </article>
+    </section>
+
+    <!-- ========== NEW PAGE 6: placeholder (not visible) - slideshow is overlayed, but keep structural sequence ========== -->
+    <!-- (we keep your page count 1..5; overlay acts as Page 6 revealed after Page 5) -->
+
+    <!-- Hidden audio element (local file in same folder) -->
+    <audio id="bgAudio" src="./Coldplay - ALL MY LOVE.mp3" preload="auto" loop crossorigin="anonymous" aria-hidden="true"></audio>
+
+  </main>
+
+<script>
+/* Full controller with added soft cinematic transition (1.5s total)
+   - Keeps all previous features (intro, music, tilt, accessibility)
+   - Added: slideshow overlay (Page 6) triggered from Next on page 5
+   - New behavior: slideshow runs ONE full pass (7s per slide), fades to white (2s), then shows final serif typewriter message "I love You Jiggy G"
+*/
+(function(){
+  /* Elements */
+  const introWrap = document.getElementById('introWrap');
+  const introCard = document.getElementById('introCard');
+  const openBtn = document.getElementById('openBtn');
+  const openSilent = document.getElementById('openSilent');
+  const bookStage = document.getElementById('bookStage');
+  const bookCard = document.getElementById('bookCard');
+  const readerTitle = document.getElementById('messageTitle');
+  const readerBody = document.getElementById('messageBody');
+  const mockScreen = document.getElementById('mockScreen');
+  const pageIndexEl = document.getElementById('pageIndex');
+  const audioToggle = document.getElementById('audioToggle');
+  const bgAudio = document.getElementById('bgAudio');
+
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const edgeNext = document.getElementById('edgeNext');
+  const edgePrev = document.getElementById('edgePrev');
+  const stage = document.getElementById('bookStage');
+
+  /* Slideshow elements */
+  const slideshowOverlay = document.getElementById('slideshowOverlay');
+  const slideshowBackdrop = document.getElementById('slideshowBackdrop');
+  const slideshowCard = document.getElementById('slideshowCard');
+  const slideshowInner = document.getElementById('slideshowInner');
+  const slideshowClose = document.getElementById('slideshowClose');
+  const ssPrev = document.getElementById('ssPrev');
+  const ssNext = document.getElementById('ssNext');
+  const ssPause = document.getElementById('ssPause');
+  const whiteFade = document.getElementById('whiteFade');
+  const finalMessage = document.getElementById('finalMessage');
+
+  /* Content pages (unchanged) */
+  const pages = [
+    { title: "The Day It Began", body:"I don’t even know how to explain it — that quiet, random moment when I sent that message back in 2018. No plan. No reason. Just a fleeting thought that maybe you’d respond. And somehow, from that tiny, ordinary click, something extraordinary began.You didn’t just reply. You listened. You answered. And over time, that one small interaction grew into a connection that surprised me every day. I never expected it to become one of the most important parts of my life, and yet here we are.Even now, I can trace it all back to that single instant — and feel the gravity of everything that followed." },
+    { title: "What You Became", body: "You became the person I didn’t realize I needed. Not because I asked for it, but because you quietly showed up. You’ve seen me at my worst, my quietest, my most awkward, and never flinched. Somehow, you made me feel understood without having to explain every detail.There’s a calm in you that feels impossible to describe — the kind that steadies everything around it. The kind that makes chaos feel lighter. You became more than a friend; you became a constant I could count on. A soft place, a voice that matters, a presence that grounds.It’s a rare kind of human, and somehow, it became you." },
+    { title: "The Little Things", body: "It’s the small things, the quiet gestures, the moments nobody else notices. The way you remember the tiniest detail from weeks ago. The little joke you drop at the perfect time. The way you show up when you don’t even have to.These tiny threads weave a tapestry that’s bigger than either of us — the steady kindness, the unspoken understanding, the moments that feel like they were meant only for us. You change people without them realizing it, and I’ve been lucky enough to be one of them.Sometimes I think the world would be heavier without your light. And I’m grateful it exists — because it touches everyone around you, me most of all." },
+    { title: "The Quiet Truth", body: "I can’t define exactly what we are, and maybe that’s the magic. It’s trust, care, laughter, quiet honesty. It’s knowing that even when everything else feels chaotic, you are one of the few names I can rely on.There’s a pull to you that inspires me — not to impress, not to prove anything, but to simply be better. Not for me, not for anyone else, but for you. Because the world deserves more people like you, and the people around you deserve that effort.This friendship, this bond, it’s rare. And I want you to know that every single day, it’s noticed, it’s valued, it’s cherished." },
+    { title: "For You, Always", body: "So here we are, celebrating you, not just the milestone but the person you’ve always been. I hope this year treats you with the same care and warmth you give to others. I hope it brings laughter, quiet moments, and the kind of joy that feels like it belongs.And I hope you never forget how rare and loved you are, not in passing, not superficially, but deeply and genuinely, by someone who sees every part of you.You make me want to be better, not because you ever asked, but because something about you inspires it. The way you listen, the way you care, the quiet strength you carry; it all reminds me that kindness can be powerful and that effort can be a form of love. You make growth feel natural, not forced, because being around you makes me want to meet the version of myself that you somehow already believe in.Here’s to more random talks, more jokes that make no sense to anyone else, more quiet honesty, and the comfort of knowing that you are seen, always. And if I’m honest, there’s something else I want you to know, something small but true: I love you, completely, and in a way that only grows with every moment we share.The kingdom is brighter because you’re in it." }
+  ];
+
+  /* -------------------------
+     Slideshow (page 6) setup - single pass then white fade + typewriter finale
+     ------------------------- */
+  const slideshowItems = ['G1.jpg','G2.jpg','G3.jpg','G4.jpg','G5.mp4','G6.mp4','G7.mp4','G8.jpg','G9.mp4','G10.mp4','G11.jpg']; // initial test set
+  let slideshowSlides = [];
+  let ssIndex = 0;
+  let ssInterval = null;
+  let ssPlaying = true;
+  const SS_DELAY = 7000; // 7s per slide
+  const WHITE_FADE_MS = 2000; // 2s white fade
+
+  // timers to be able to cancel
+  let finalTimeout = null;
+  let endSequenceStarted = false;
+
+  function buildSlideshow() {
+    slideshowInner.innerHTML = '';
+    slideshowSlides = [];
+    slideshowItems.forEach((src, i) => {
+      const isVideo = src.toLowerCase().endsWith('.mp4') || src.toLowerCase().endsWith('.webm');
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.setAttribute('data-i', i);
+
+      if (isVideo) {
+        const vid = document.createElement('video');
+        vid.className = 'media';
+        vid.src = src;
+        vid.muted = true;
+        vid.loop = true; // loop within slide if desired
+        vid.playsInline = true;
+        vid.preload = 'metadata';
+        vid.setAttribute('playsinline','');
+        vid.setAttribute('webkit-playsinline','');
+        vid.style.width = '100%';
+        vid.style.height = '100%';
+        vid.style.objectFit = 'cover';
+        slide.appendChild(vid);
+      } else {
+        const img = document.createElement('img');
+        img.className = 'media';
+        img.src = src;
+        img.loading = 'lazy';
+        img.alt = '';
+        slide.appendChild(img);
+        // preload
+        const im = new Image();
+        im.src = src;
+      }
+
+      slideshowInner.appendChild(slide);
+      slideshowSlides.push(slide);
+    });
+  }
+
+  function showSlide(i) {
+    if (!slideshowSlides.length) return;
+    i = ((i % slideshowSlides.length) + slideshowSlides.length) % slideshowSlides.length;
+    slideshowSlides.forEach((s, idx) => {
+      const wasVisible = s.classList.contains('visible');
+      s.classList.toggle('visible', idx === i);
+      const media = s.querySelector('video');
+      if (media) {
+        if (idx === i && ssPlaying) {
+          try { media.currentTime = 0; } catch(e){}
+          const p = media.play && media.play();
+          if (p && typeof p.then === 'function') p.catch(()=>{});
+        } else {
+          try { media.pause && media.pause(); } catch(e){}
+        }
+      }
+    });
+    ssIndex = i;
+  }
+
+  function startSlideshowSinglePass() {
+    // run single pass: advance every SS_DELAY, then run end sequence
+    if (!slideshowSlides.length) buildSlideshow();
+    ssPlaying = true;
+    endSequenceStarted = false;
+    showSlide(0);
+    clearInterval(ssInterval);
+    let step = 0;
+    ssInterval = setInterval(()=> {
+      step++;
+      if (step < slideshowSlides.length) {
+        showSlide(step);
+      } else {
+        // reached after showing last slide; clear and start final sequence
+        clearInterval(ssInterval);
+        ssInterval = null;
+        startFinalSequence(); // fade to white -> typewriter
+      }
+    }, SS_DELAY);
+  }
+
+  function cancelSlideshowAll() {
+    clearInterval(ssInterval);
+    ssInterval = null;
+    if (finalTimeout) {
+      clearTimeout(finalTimeout);
+      finalTimeout = null;
+    }
+    // pause videos
+    slideshowSlides.forEach(s => {
+      const v = s.querySelector('video');
+      if (v) try { v.pause(); } catch(e){}
+    });
+    endSequenceStarted = false;
+  }
+
+  function startFinalSequence() {
+    if (endSequenceStarted) return;
+    endSequenceStarted = true;
+    // show white fade
+    whiteFade.classList.add('visible');
+    whiteFade.setAttribute('aria-hidden','false');
+    // small delay to let white fade fade-in visually before typewriter
+    finalTimeout = setTimeout(()=> {
+      // Run typewriter reveal
+      runTypewriter("Happy Birthday, I love You Jiggy G.", finalMessage, ()=> {
+        // finished typing - keep message visible (final state)
+        finalTimeout = null;
+      });
+    }, WHITE_FADE_MS - 300); // start typing just after white is nearly visible
+  }
+
+  // typewriter effect: text appears one char at a time
+  function runTypewriter(text, el, cb) {
+    el.textContent = '';
+    el.classList.add('visible');
+    el.setAttribute('aria-hidden','false');
+    const chars = Array.from(text);
+    let pos = 0;
+    const delay = 70; // ms per char
+    function step() {
+      if (pos < chars.length) {
+        el.textContent += chars[pos++];
+        setTimeout(step, delay);
+      } else {
+        if (cb) cb();
+      }
+    }
+    step();
+  }
+
+  function openSlideshowOverlay() {
+    // Build slides (if not done)
+    if (!slideshowSlides.length) buildSlideshow();
+    slideshowOverlay.classList.add('visible');
+    // start card open animation
+    requestAnimationFrame(()=> {
+      slideshowOverlay.classList.add('open');
+      slideshowOverlay.setAttribute('aria-hidden','false');
+      // small delay so the card animation is visible, then start the single-pass slideshow
+      setTimeout(()=> {
+        // reset any leftover UI
+        whiteFade.classList.remove('visible');
+        finalMessage.classList.remove('visible');
+        finalMessage.setAttribute('aria-hidden','true');
+        startSlideshowSinglePass();
+      }, 420);
+    });
+  }
+
+  function closeSlideshowOverlay() {
+    // reverse
+    slideshowOverlay.classList.remove('open');
+    slideshowOverlay.setAttribute('aria-hidden','true');
+    // stop everything
+    cancelSlideshowAll();
+    // after animation hides, remove visible
+    setTimeout(()=> {
+      slideshowOverlay.classList.remove('visible');
+      // reset inner DOM to free resources
+      slideshowInner.innerHTML = '';
+      slideshowSlides = [];
+      whiteFade.classList.remove('visible');
+      finalMessage.classList.remove('visible');
+      finalMessage.setAttribute('aria-hidden','true');
+      endSequenceStarted = false;
+    }, 420);
+  }
+
+  /* -------------------------
+     End slideshow setup
+     ------------------------- */
+
+  let idx = 0;
+  let audioStarted = false;
+  let isTransitioning = false;
+
+  /* Audio setup */
+  if (bgAudio) {
+    bgAudio.loop = true;
+    bgAudio.preload = 'auto';
+    bgAudio.volume = 0.65;
+  }
+
+  /* Basic set page without cinematic animation (instant or reduced-motion) */
+  function setPageInstant(i) {
+    i = Math.max(0, Math.min(pages.length -1, i));
+    idx = i;
+    const p = pages[i];
+    readerTitle.textContent = p.title;
+    readerBody.textContent = p.body;
+    mockScreen.textContent = p.title;
+    pageIndexEl.textContent = `${i+1} / ${pages.length}`;
+    prevBtn.disabled = (i === 0);
+    // Next is enabled always; when on last page Next will open slideshow overlay
+    nextBtn.disabled = false;
+  }
+
+  /* Cinematic transition sequence (soft & elegant ~1.5s) */
+  async function cinematicTo(targetIndex) {
+    if (isTransitioning) return;
+    targetIndex = Math.max(0, Math.min(pages.length -1, targetIndex));
+    if (targetIndex === idx) return;
+
+    // Respect reduced-motion
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      setPageInstant(targetIndex);
+      return;
+    }
+
+    isTransitioning = true;
+    // disable controls while animating
+    disableControls(true);
+
+    const total = 1500; // total ms
+    const closeDur = 450; // close phase
+    const swapDelay = 150; // gap while closed
+    const openDur = total - closeDur - swapDelay; // open phase ~900
+
+    // Phase A: gentle close -> rotate and slightly compress (soft breathing)
+    const bookCloseAnim = bookCard.animate([
+      { transform: getComputedStyle(bookCard).transform || 'none', opacity: 1 },
+      { transform: 'perspective(2200px) rotateX(10deg) scale(0.98)', opacity: 0.98 }
+    ], { duration: closeDur, easing: 'cubic-bezier(.2,.8,.25,1)', fill: 'forwards' });
+
+    // content fades/peels slightly back
+    const titleOut = readerTitle.animate([
+      { transform: 'translateZ(0) scale(1)', opacity: 1 },
+      { transform: 'translateZ(-24px) scale(.98)', opacity: 0 }
+    ], { duration: closeDur, easing: 'ease-out', fill: 'forwards' });
+
+    const bodyOut = readerBody.animate([
+      { transform: 'translateZ(0)', opacity: 1 },
+      { transform: 'translateZ(-24px)', opacity: 0 }
+    ], { duration: closeDur + 30, easing: 'ease-out', fill: 'forwards' });
+
+    // also fade mock screen slightly
+    const mockOut = mockScreen.animate([
+      { opacity: 1, transform: 'translateZ(0) scale(1)' },
+      { opacity: 0.2, transform: 'translateZ(-18px) scale(.99)' }
+    ], { duration: closeDur, easing: 'ease-out', fill: 'forwards' });
+
+    // wait for close to complete
+    await finished(bookCloseAnim);
+
+    // small pause (book closed) then swap DOM content
+    await wait(swapDelay);
+
+    // swap content
+    idx = targetIndex;
+    const p = pages[idx];
+    readerTitle.textContent = p.title;
+    readerBody.textContent = p.body;
+    mockScreen.textContent = p.title;
+    pageIndexEl.textContent = `${idx+1} / ${pages.length}`;
+    prevBtn.disabled = (idx === 0);
+
+    // Phase B: open -> subtle decompress and reveal
+    const bookOpenAnim = bookCard.animate([
+      { transform: 'perspective(2200px) rotateX(10deg) scale(0.98)', opacity: 0.98 },
+      { transform: 'perspective(2200px) rotateX(0deg) scale(1)', opacity: 1 }
+    ], { duration: openDur, easing: 'cubic-bezier(.16,.9,.24,1)', fill: 'forwards' });
+
+    const titleIn = readerTitle.animate([
+      { transform: 'translateZ(18px) scale(.98)', opacity: 0 },
+      { transform: 'translateZ(0) scale(1)', opacity: 1 }
+    ], { duration: Math.round(openDur * 0.55), easing: 'cubic-bezier(.2,.9,.3,1)', fill: 'forwards' });
+
+    const bodyIn = readerBody.animate([
+      { transform: 'translateZ(18px)', opacity: 0 },
+      { transform: 'translateZ(0)', opacity: 1 }
+    ], { duration: openDur, easing: 'cubic-bezier(.2,.9,.3,1)', fill: 'forwards' });
+
+    const mockIn = mockScreen.animate([
+      { opacity: 0.2, transform: 'translateZ(-18px) scale(.99)' },
+      { opacity: 1, transform: 'translateZ(0) scale(1)' }
+    ], { duration: openDur, easing: 'cubic-bezier(.2,.9,.3,1)', fill: 'forwards' });
+
+    await finished(bookOpenAnim);
+
+    // done
+    isTransitioning = false;
+    disableControls(false);
+  }
+
+  /* helper: return promise for Animation finished (handles older browsers) */
+  function finished(anim) {
+    return new Promise((resolve) => {
+      if (!anim) return resolve();
+      if (typeof anim.finished === 'object' || typeof anim.finished === 'undefined') {
+        // modern browsers provide finished promise
+        if (anim.finished && typeof anim.finished.then === 'function') {
+          anim.finished.then(resolve).catch(resolve);
+        } else {
+          // fallback: use setTimeout with duration
+          setTimeout(resolve, anim.effect ? anim.effect.getTiming().duration : 300);
+        }
+      } else {
+        // very old fallback
+        setTimeout(resolve, 400);
+      }
+    });
+  }
+
+  /* tiny wait */
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  /* disable/enable nav controls during transition */
+  function disableControls(val) {
+    [nextBtn, prevBtn, edgeNext, edgePrev].forEach(el => {
+      if (!el) return;
+      el.disabled = !!val;
+      if (val) el.setAttribute('aria-hidden','true');
+      else el.removeAttribute('aria-hidden');
+    });
+  }
+
+  /* initial render (instant) */
+  function setPageInstantAndUI(i) {
+    setPageInstant(i);
+  }
+  function setPageInstant(i) {
+    i = Math.max(0, Math.min(pages.length -1, i));
+    idx = i;
+    const p = pages[i];
+    readerTitle.textContent = p.title;
+    readerBody.textContent = p.body;
+    mockScreen.textContent = p.title;
+    pageIndexEl.textContent = `${i+1} / ${pages.length}`;
+    prevBtn.disabled = (i === 0);
+    nextBtn.disabled = false;
+  }
+
+  // first render
+  setPageInstant(0);
+
+  /* Navigation wrappers (modified: when on last story page, Next opens slideshow) */
+  function next() {
+    if (isTransitioning) return;
+    // if on last story page (index == pages.length -1), open slideshow instead of trying to go higher
+    if (idx >= pages.length -1) {
+      // fade out page 5 visually then open the slideshow overlay
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        openSlideshowOverlay();
+      } else {
+        // gentle fade out of the book card and then open overlay
+        bookCard.classList.add('fade-out');
+        setTimeout(()=> {
+          openSlideshowOverlay();
+          // restore bookcard fade state after overlay open so it looks consistent if user closes
+          setTimeout(()=> bookCard.classList.remove('fade-out'), 420);
+        }, 300);
+      }
+      return;
+    }
+    cinematicTo(idx + 1);
+  }
+  function prev() {
+    if (isTransitioning) return;
+    // if slideshow is open, close it and stay on last page
+    if (slideshowOverlay.classList.contains('visible')) {
+      closeSlideshowOverlay();
+      return;
+    }
+    if (idx <= 0) return;
+    cinematicTo(idx - 1);
+  }
+
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+  edgeNext.addEventListener('click', next);
+  edgePrev.addEventListener('click', prev);
+
+  document.addEventListener('keydown', (e) => {
+    if (isTransitioning) return;
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'Home') cinematicTo(0);
+    if (e.key === 'End') cinematicTo(pages.length -1);
+    if (e.key === 'Escape' && slideshowOverlay.classList.contains('visible')) closeSlideshowOverlay();
+  });
+
+  /* Intro open behavior (with music) */
+  function openBook(playMusic = true) {
+    // Play music only if requested and not already started
+    if (playMusic && bgAudio && !audioStarted) {
+      const p = bgAudio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(()=> { audioStarted = true; audioToggle.innerText = 'Pause'; audioToggle.setAttribute('aria-pressed','true'); })
+         .catch(()=> { /* play blocked; still open silently */ audioStarted = false; audioToggle.innerText = 'Play'; audioToggle.setAttribute('aria-pressed','false'); });
+      } else {
+        audioStarted = true;
+        audioToggle.innerText = 'Pause';
+        audioToggle.setAttribute('aria-pressed','true');
+      }
+    } else if (playMusic && bgAudio && audioStarted) {
+      // already playing
+      audioToggle.innerText = 'Pause';
+      audioToggle.setAttribute('aria-pressed','true');
+    }
+
+    // animate intro out and show book
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      introWrap.classList.add('hidden');
+      bookStage.classList.remove('hidden');
+      bookStage.focus && bookStage.focus();
+    } else {
+      introCard.classList.add('fade-out');
+      setTimeout(()=> {
+        introWrap.classList.add('hidden');
+        bookStage.classList.remove('hidden');
+        bookCard.classList.add('fade-in');
+        setTimeout(()=> bookCard.focus(), 220);
+      }, 320);
+    }
+  }
+
+  openBtn.addEventListener('click', ()=> openBook(true));
+  openSilent.addEventListener('click', ()=> openBook(false));
+
+  /* Audio toggle on main UI */
+  audioToggle.addEventListener('click', ()=> {
+    if (!bgAudio) return;
+    if (bgAudio.paused) {
+      const p = bgAudio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(()=> { audioStarted = true; audioToggle.innerText = 'Pause'; audioToggle.setAttribute('aria-pressed','true'); }).catch(()=>{});
+      } else {
+        audioStarted = true; audioToggle.innerText = 'Pause'; audioToggle.setAttribute('aria-pressed','true');
+      }
+    } else {
+      // fade out quickly then pause
+      fadeOutAudio(bgAudio, bgAudio.volume || 0.65, 0, 240, ()=> { try{ bgAudio.pause(); }catch(e){} });
+      audioToggle.innerText = 'Play';
+      audioToggle.setAttribute('aria-pressed','false');
+    }
+  });
+
+  /* audio fade helpers */
+  function fadeOutAudio(audioEl, from, to, duration, cb){
+    if (!audioEl) { if (cb) cb(); return; }
+    const start = performance.now();
+    function step(now){
+      const t = Math.min((now - start) / duration, 1);
+      audioEl.volume = from + (to - from) * t;
+      if (t < 1) requestAnimationFrame(step);
+      else { if (cb) cb(); }
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* Slideshow event wiring (close / controls) */
+  slideshowClose.addEventListener('click', ()=> {
+    // close overlay and cancel sequence
+    closeSlideshowOverlay();
+  });
+  ssPrev.addEventListener('click', ()=> {
+    if (!slideshowSlides.length) return;
+    // if final sequence started, ignore prev
+    if (endSequenceStarted) return;
+    clearInterval(ssInterval);
+    ssInterval = null;
+    ssIndex = Math.max(0, ssIndex - 1);
+    showSlide(ssIndex);
+    // continue single-pass from this point
+    // compute remaining steps and start timer accordingly
+    startSinglePassFrom(ssIndex);
+  });
+  ssNext.addEventListener('click', ()=> {
+    if (!slideshowSlides.length) return;
+    if (endSequenceStarted) return;
+    clearInterval(ssInterval);
+    ssInterval = null;
+    ssIndex = Math.min(slideshowSlides.length - 1, ssIndex + 1);
+    showSlide(ssIndex);
+    startSinglePassFrom(ssIndex);
+  });
+  ssPause.addEventListener('click', ()=> {
+    // pause toggles only while slideshow active (before final sequence)
+    if (endSequenceStarted) return;
+    if (ssInterval) {
+      clearInterval(ssInterval);
+      ssInterval = null;
+      ssPlaying = false;
+      ssPause.innerText = 'Play';
+      ssPause.setAttribute('aria-pressed','true');
+      // pause videos
+      slideshowSlides.forEach(s => {
+        const v = s.querySelector('video');
+        if (v) try { v.pause(); } catch(e){}
+      });
+    } else {
+      // resume single pass from current index
+      ssPlaying = true;
+      ssPause.innerText = 'Pause';
+      ssPause.setAttribute('aria-pressed','false');
+      startSinglePassFrom(ssIndex);
+    }
+  });
+
+  // helper to start single-pass from a particular slide index
+  function startSinglePassFrom(startIndex) {
+    if (!slideshowSlides.length) buildSlideshow();
+    // clear any previous timeouts
+    clearInterval(ssInterval);
+    ssInterval = null;
+    let step = startIndex;
+    // if we're at last slide, go to final sequence
+    if (step >= slideshowSlides.length - 1) {
+      startFinalSequence();
+      return;
+    }
+    // set timer to step forward automatically
+    ssInterval = setInterval(()=> {
+      step++;
+      if (step < slideshowSlides.length) {
+        showSlide(step);
+      } else {
+        clearInterval(ssInterval);
+        ssInterval = null;
+        startFinalSequence();
+      }
+    }, SS_DELAY);
+  }
+
+  /* Tilt & parallax (desktop + device) - unchanged from original */
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReduced) {
+    const depth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--depth')) || 40;
+    let raf = null;
+
+    function applyTilt(rx, ry, nx=0, ny=0) {
+      bookCard.style.setProperty('--rx', rx + 'deg');
+      bookCard.style.setProperty('--ry', ry + 'deg');
+      const mock = document.getElementById('mock');
+      if (!mock) return;
+      const l2 = mock.querySelector('.l2');
+      const l3 = mock.querySelector('.l3');
+      const px = nx * (depth * 0.4);
+      const py = ny * (depth * 0.35);
+      if (l2) l2.style.transform = `translate3d(${px*0.36}px, ${py*0.36}px, calc(var(--depth) * 0.5px))`;
+      if (l3) l3.style.transform = `translate3d(${px*0.62}px, ${py*0.62}px, calc(var(--depth) * 0.8px))`;
+      mock.style.transform = `rotateX(${rx*0.06}deg) rotateY(${ry*0.06}deg) translateZ(0)`;
+    }
+
+    function onPointer(e){
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(()=>{
+        const rect = bookCard.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const nx = (e.clientX - cx) / (rect.width/2);
+        const ny = (e.clientY - cy) / (rect.height/2);
+        const rx = clamp(ny * 8, -12, 12) * -1;
+        const ry = clamp(nx * 12, -16, 16);
+        if (!isTransitioning) applyTilt(rx, ry, nx, ny);
+      });
+    }
+    function onLeave(){ if (raf) cancelAnimationFrame(raf); applyTilt(0,0,0,0); }
+
+    bookStage.addEventListener('pointermove', onPointer, { passive:true });
+    bookStage.addEventListener('pointerleave', onLeave, { passive:true });
+
+    if ('ondeviceorientation' in window) {
+      window.addEventListener('deviceorientation', (ev)=>{
+        const gamma = ev.gamma || 0;
+        const beta = ev.beta || 0;
+        const nx = clamp(gamma / 45, -1, 1);
+        const ny = clamp(beta / 60, -1, 1);
+        const rx = clamp(-ny * 8, -12, 12);
+        const ry = clamp(nx * 12, -16, 16);
+        if (!isTransitioning) applyTilt(rx, ry, nx, ny);
+      }, true);
+    }
+  }
+
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+
+  /* Focus handling */
+  bookCard.addEventListener('focus', ()=> bookCard.classList.add('focused'));
+  bookCard.addEventListener('blur', ()=> bookCard.classList.remove('focused'));
+
+  /* expose minimal API */
+  window._memoryBook = { go: (i)=> cinematicTo(i), next, prev: prev, length: pages.length, current: ()=> idx };
+
+  /* Accessibility: ensure open button focused on load */
+  openBtn && openBtn.focus();
+
+  // Utilities for build/start
+  function startSlideshowSinglePassIfNeeded() {
+    if (!slideshowSlides.length) buildSlideshow();
+    startSlideshowSinglePass();
+  }
+
+  // Build slides when overlay is opened
+  // (handled by openSlideshowOverlay)
+
+})();
+</script>
+</body>
+</html>

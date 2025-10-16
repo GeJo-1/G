@@ -1,0 +1,207 @@
+/* ========== GENERAL RESET ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom right, #fffbeb, #ffe4e6, #ffffff);
+  overflow: hidden;
+  color: #374151;
+}
+
+/* ========== SCENE CONTAINERS ========== */
+.scene {
+  position: absolute;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 1s ease, transform 1s ease;
+  width: 90%;
+  max-width: 700px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ========== INTRO TEXT ========== */
+#intro-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #9f1239;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 10px rgba(255, 192, 203, 0.3);
+  animation: floatUp 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0) rotateX(0deg); }
+  to { transform: translateY(-10px) rotateX(3deg); }
+}
+
+/* ========== NAME SCENE ========== */
+#name {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #be123c;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-shadow:
+    1px 1px 2px rgba(0,0,0,0.15),
+    2px 2px 6px rgba(255,182,193,0.5),
+    0 0 25px rgba(255,105,180,0.4);
+  transform: translateZ(0);
+  animation: name3D 5s ease forwards;
+}
+
+@keyframes name3D {
+  0% { transform: rotateY(-90deg) scale(0.8); opacity: 0; }
+  60% { transform: rotateY(15deg) scale(1.05); opacity: 1; }
+  100% { transform: rotateY(0deg) scale(1); }
+}
+
+/* ========== MESSAGE CARD ========== */
+.card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,245,245,0.85));
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow:
+    0 15px 40px rgba(0,0,0,0.15),
+    inset 0 1px 2px rgba(255,255,255,0.8);
+  backdrop-filter: blur(8px);
+  animation: cardFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes cardFloat {
+  from { transform: rotateX(1.5deg) rotateY(-1.5deg) translateY(0); }
+  to { transform: rotateX(-1.5deg) rotateY(1.5deg) translateY(-6px); }
+}
+
+.card p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #4b5563;
+}
+
+/* ========== CONTROLS ========== */
+.controls {
+  margin-top: 1.5rem;
+}
+
+#play-btn {
+  background-color: #f43f5e;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.4s ease;
+  box-shadow: 0 0 12px rgba(244,63,94,0.4);
+}
+
+#play-btn:hover {
+  background-color: #e11d48;
+  transform: scale(1.05);
+  box-shadow: 0 0 22px rgba(244,63,94,0.6);
+}
+
+.memory-link {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #9f1239;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.memory-link:hover {
+  color: #be123c;
+}
+
+/* ========== CONFETTI ========== */
+#confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.conf-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0.9;
+  animation: conf-fall linear forwards;
+}
+
+@keyframes conf-fall {
+  from {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ========== PETALS ========== */
+#petal-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  background-image: url('petal.svg');
+  background-size: contain;
+  background-repeat: repeat;
+  opacity: 0.2;
+  animation: petalParallax 20s linear infinite alternate;
+}
+
+@keyframes petalParallax {
+  from { transform: translate3d(0,0,0); }
+  to { transform: translate3d(-40px, -20px, 0); }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  #name { font-size: 2.6rem; }
+  #intro-text { font-size: 1.2rem; animation: floatUpMobile 3s ease-in-out infinite alternate; }
+  .card { padding: 1.5rem; transform: none; animation: none; }
+  .card p { font-size: 1rem; }
+
+  @keyframes floatUpMobile {
+    from { transform: translateY(0); }
+    to { transform: translateY(-8px); }
+  }
+}
+
+@media (min-width: 1024px) {
+  #name { font-size: 5rem; }
+  .card { max-width: 800px; }
+}
+
+/* ========== FADE ANIMATION ========== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
