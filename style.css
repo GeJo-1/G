@@ -5,27 +5,33 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
-  height: 100vh;
   font-family: 'Poppins', sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(to bottom right, #fffbeb, #ffe4e6, #ffffff);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   color: #374151;
+  padding: 1rem;
 }
 
 /* ========== SCENE CONTAINERS ========== */
 .scene {
-  position: absolute;
+  position: relative;
   text-align: center;
   opacity: 1;
   transition: opacity 1s ease, transform 1s ease;
-  width: 90%;
+  width: 100%;
   max-width: 700px;
   perspective: 1200px;
   transform-style: preserve-3d;
+  margin: auto;
 }
 
 .hidden {
@@ -73,13 +79,16 @@ body {
 /* ========== MESSAGE CARD ========== */
 .card {
   background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,245,245,0.85));
-  padding: 2.5rem;
+  padding: 2rem 2.5rem;
   border-radius: 1.5rem;
   box-shadow:
     0 15px 40px rgba(0,0,0,0.15),
     inset 0 1px 2px rgba(255,255,255,0.8);
   backdrop-filter: blur(8px);
   animation: cardFloat 6s ease-in-out infinite alternate;
+  width: 100%;
+  margin: 2rem auto;
+  overflow: hidden;
 }
 
 @keyframes cardFloat {
@@ -89,14 +98,19 @@ body {
 
 .card p {
   margin-bottom: 1rem;
-  font-size: 1.1rem;
-  line-height: 1.8;
+  font-size: 1.05rem;
+  line-height: 1.7;
   color: #4b5563;
+  text-align: left;
 }
 
 /* ========== CONTROLS ========== */
 .controls {
   margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 #play-btn {
@@ -109,6 +123,8 @@ body {
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.4s ease;
   box-shadow: 0 0 12px rgba(244,63,94,0.4);
+  width: 100%;
+  max-width: 280px;
 }
 
 #play-btn:hover {
@@ -118,9 +134,7 @@ body {
 }
 
 .memory-link {
-  display: block;
-  margin-top: 0.75rem;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #9f1239;
   text-decoration: underline;
   transition: color 0.3s;
@@ -139,26 +153,6 @@ body {
   height: 100%;
   pointer-events: none;
   overflow: hidden;
-}
-
-.conf-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  opacity: 0.9;
-  animation: conf-fall linear forwards;
-}
-
-@keyframes conf-fall {
-  from {
-    transform: translateY(0) rotate(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
 }
 
 /* ========== PETALS ========== */
@@ -186,8 +180,22 @@ body {
 @media (max-width: 768px) {
   #name { font-size: 2.6rem; }
   #intro-text { font-size: 1.2rem; animation: floatUpMobile 3s ease-in-out infinite alternate; }
-  .card { padding: 1.5rem; transform: none; animation: none; }
-  .card p { font-size: 1rem; }
+
+  .card {
+    padding: 1.5rem;
+    animation: none;
+    margin: 1rem auto;
+  }
+
+  .card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  #play-btn {
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
+  }
 
   @keyframes floatUpMobile {
     from { transform: translateY(0); }
@@ -195,13 +203,27 @@ body {
   }
 }
 
+@media (max-width: 480px) {
+  .card {
+    padding: 1.2rem;
+    border-radius: 1rem;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+  }
+
+  #play-btn {
+    font-size: 0.95rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .controls {
+    gap: 0.6rem;
+  }
+}
+
 @media (min-width: 1024px) {
   #name { font-size: 5rem; }
   .card { max-width: 800px; }
-}
-
-/* ========== FADE ANIMATION ========== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
