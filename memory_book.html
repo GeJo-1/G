@@ -728,20 +728,30 @@
   }
 
   function startFinalSequence() {
-    if (endSequenceStarted) return;
-    endSequenceStarted = true;
-    // show white fade
-    whiteFade.classList.add('visible');
-    whiteFade.setAttribute('aria-hidden','false');
-    // small delay to let white fade fade-in visually before typewriter
-    finalTimeout = setTimeout(()=> {
-      // Run typewriter reveal
-      runTypewriter("Happy Birthday, I love You Jiggy G.", finalMessage, ()=> {
-        // finished typing - keep message visible (final state)
-        finalTimeout = null;
-      });
-    }, WHITE_FADE_MS - 300); // start typing just after white is nearly visible
-  }
+  if (endSequenceStarted) return;
+  endSequenceStarted = true;
+
+  whiteFade.classList.add('visible');
+  whiteFade.setAttribute('aria-hidden', 'false');
+
+  finalTimeout = setTimeout(() => {
+    // Line 1
+    runTypewriter("Happy 25th Birthday", finalMessage, () => {
+      // Line 2
+      setTimeout(() => {
+        runTypewriter("I love you Jiggy G.", finalMessage, () => {
+          // Line 3
+          setTimeout(() => {
+            runTypewriter("You mean the world to me.", finalMessage, () => {
+              finalTimeout = null;
+            });
+          }, 800);
+        });
+      }, 800);
+    });
+  }, WHITE_FADE_MS - 300);
+}
+
 
   // typewriter effect: text appears one char at a time
   function runTypewriter(text, el, cb) {
